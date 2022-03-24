@@ -16,7 +16,7 @@ public class Booking {
 
     @Id
     @GeneratedValue
-    private UUID id;
+    private Long id;
 
     private String period;
 

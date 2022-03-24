@@ -17,7 +17,7 @@ public class Renter {
 
     @Id
     @GeneratedValue
-    private UUID id;
+    private Long id;
 
     private String name;
 }
