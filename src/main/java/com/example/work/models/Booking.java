@@ -1,13 +1,13 @@
 package com.example.work.models;
 
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
-import java.util.UUID;
+import java.util.Date;
 
+@Data
 @Entity
 @Table(name = "booking")
 @AllArgsConstructor
@@ -15,19 +15,24 @@ import java.util.UUID;
 public class Booking {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String period;
+    @OneToOne(fetch = FetchType.EAGER,cascade=CascadeType.ALL)
+    private Renter owner;
 
-    @OneToOne(targetEntity = Renter.class)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private Renter renter;
-
-    @OneToOne(targetEntity = Renter.class)
-    @OnDelete(action = OnDeleteAction.CASCADE)
+    @OneToOne(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
     private Renter tenant;
 
+    @OneToOne(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
+    private ObjectRent objectRent;
+
     private int price;
+
+    @Column(name = "rent_start")
+    private Date start;
+
+    @Column(name = "rent_end")
+    private Date end;
 
 }

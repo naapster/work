@@ -1,27 +1,13 @@
 package com.example.work.services;
 
+import com.example.work.dto.BookingRequest;
 import com.example.work.models.Booking;
-import com.example.work.repository.BookingRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
-import javax.persistence.Entity;
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
 import java.util.List;
 
-@Service
-public class BookingService {
+public interface BookingService {
 
-    @Autowired
-   private EntityManager bookingRepository;
+    List<Booking> getAllBooking();
 
-
-
-    public List<Booking> getAllBooking()
-    {
-        String query = "from " + Booking.class.getSimpleName();
-        Query query1 = bookingRepository.createQuery(query);
-        return query1.getResultList();
-    }
+     Booking addBooking(BookingRequest booking) throws Exception;
 }

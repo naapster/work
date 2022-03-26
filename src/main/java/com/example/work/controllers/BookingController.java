@@ -1,35 +1,40 @@
 package com.example.work.controllers;
 
+import com.example.work.dto.BookingRequest;
 import com.example.work.models.Booking;
 import com.example.work.services.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @RestController
-@RequestMapping("api/booking")
+@RequestMapping()
 public class BookingController {
 
+    private BookingService bookingService;
+
     @Autowired
-    BookingService bookingService;
+    public BookingController(BookingService bookingService) {
+        this.bookingService = bookingService;
+    }
 
 
-    @GetMapping
-    public ResponseEntity<?> getAllRents() {
+    @GetMapping(value = "/api/all")
+    public ResponseEntity<List<Booking>> getAllRents() {
+        List<Booking> booking = bookingService.getAllBooking();
+        return new ResponseEntity<>(booking, HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/api/create")
+    public ResponseEntity<BookingRequest> addBooking(@RequestBody BookingRequest request) {
         try {
-            List<Booking> rentList = bookingService.getAllBooking();
-            return new ResponseEntity<>(rentList, HttpStatus.OK);
-        } catch (NoSuchElementException ex) {
-            throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND, "No booking to display"
-            );
+            bookingService.addBooking(request);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
