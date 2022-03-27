@@ -1,12 +1,14 @@
 package com.example.work.controllers;
 
 import com.example.work.dto.BookingRequest;
+import com.example.work.exceptions.ParameterException;
 import com.example.work.models.Booking;
 import com.example.work.services.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -33,7 +35,9 @@ public class BookingController {
         try {
             bookingService.addBooking(request);
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST
+            );
         }
         return new ResponseEntity<>(HttpStatus.OK);
     }

@@ -35,4 +35,12 @@ public class Booking {
     @Column(name = "rent_end")
     private Date end;
 
+    public Booking(Renter owner, Renter tenant, ObjectRent objectRent, int price, Date start, Date end) {
+        this.owner = owner;
+        this.tenant = tenant;
+        this.objectRent = objectRent;
+        this.price = price;
+        this.start = start;
+        this.end = end;
+    }
 }

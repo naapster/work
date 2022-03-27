@@ -26,4 +26,9 @@ public class RenterRepositoryImpl implements RenterRepository {
         entityManager.merge(renter);
         return null;
     }
+
+    @Override
+    public Renter getRenterById(Long id) {
+        return entityManager.find(Renter.class, id);
+    }
 }

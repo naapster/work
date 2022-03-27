@@ -9,4 +9,7 @@ public interface RenterRepository {
     List<Renter> getAllRenters();
 
     Renter createRenter(Renter renter);
+
+    Renter getRenterById(Long id);
+
 }
