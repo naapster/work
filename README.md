@@ -1,4 +1,30 @@
 
+# Booking system
+
+
+
+## Installation
+
+Install project with mvn
+
+```bash
+mvn clean install
+java -jar target/work-0.0.1-SNAPSHOT.jar
+```
+    
+## API Reference
+
+http://localhost:8080/swagger-ui/index.html
+
+
+## DataBase
+http://localhost:8080/console
+
+| Key | value  |
+| :-----: | :-: |
+| JDBC URL: | jdbc:h2:file:./database22 |
+|User Name: | admin |
+|Password: | admin |
 
 ## Usage/Examples
 
@@ -45,3 +71,5 @@ Obtain all booking by Renter name, for Robert exist for Roberto not exist
 curl --location --request GET 'http://localhost:8080/api/booking/all/renter?name=Robert'
 
 ```
+
+
