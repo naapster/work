@@ -13,6 +13,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class BookingValidator {
 
@@ -26,7 +27,8 @@ public class BookingValidator {
         this.objectRentRepository = objectRentRepository;
     }
 
-    public boolean valid(BookingRequest booking) throws Exception {
+    public boolean valid(BookingRequest booking)
+    {
         boolean valid;
         List<Booking> bookingList = bookingRepository.getBooking();
 
@@ -35,7 +37,7 @@ public class BookingValidator {
             Date rent_start_temp = new SimpleDateFormat("dd/MM/yyyy").parse(booking.getStart());
             Date rent_end_temp = new SimpleDateFormat("dd/MM/yyyy").parse(booking.getEnd());
 
-            valid = checkExistingBooking(bookingList, rent_start_temp, rent_end_temp);
+            valid = checkExistingBooking(bookingList, rent_start_temp, rent_end_temp, booking.getObjectRentId());
 
             databaseObjectExistingChecker(booking);
         } catch (ParseException e) {
@@ -63,7 +65,8 @@ public class BookingValidator {
         }
     }
 
-    private void validRequestParameter(BookingRequest booking) throws Exception {
+    private void validRequestParameter(BookingRequest booking)
+    {
         if (booking != null) {
             if (booking.getObjectRentId() == null) {
                 throw new ParameterException("Missing objectRentId parameter");
@@ -83,18 +86,15 @@ public class BookingValidator {
         }
     }
 
-    private boolean checkExistingBooking(List<Booking> bookingList, Date rent_start_temp, Date rent_end_temp) {
-        boolean bookingExists = true;
-        for (Booking booking1 : bookingList) {
-            if (rent_start_temp.after(booking1.getEnd()) || rent_end_temp.equals(booking1.getEnd()) || rent_start_temp.equals(booking1.getStart())) {
-                bookingExists = false;
-                break;
-            }
-            if (rent_start_temp.before(booking1.getStart()) && rent_end_temp.before(booking1.getStart())) {
-                bookingExists = false;
-                break;
+    private boolean checkExistingBooking(List<Booking> bookingList, Date rent_start_temp, Date rent_end_temp, Long rentObjectId)
+    {
+        //TODO update checking without download all booking from database. Write sql query!!!
+        List<Booking> bookingForRentObjects = bookingList.stream().filter(booking -> booking.getObjectRent().getId().equals(rentObjectId)).collect(Collectors.toList());
+        for (Booking existing: bookingForRentObjects) {
+            if (!(rent_start_temp.after(existing.getEnd())  || rent_end_temp.before(existing.getStart()))) {
+               return true;
             }
         }
-        return bookingExists;
+        return false;
     }
 }

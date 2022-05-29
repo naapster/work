@@ -42,7 +42,7 @@ public class Start {
         ObjectRent objectRent1 = new ObjectRent(1L, "house1", 1000, 100);
         ObjectRent objectRent2 = new ObjectRent(2L, "house2", 1500, 150);
         Booking booking = new Booking(1L, owner, renter, objectRent1, 2000, Date.valueOf(LocalDate.of(2022, 1, 23)), Date.valueOf(LocalDate.of(2022, 3, 29)));
-        Booking booking1 = new Booking(2L, owner2, renter2, objectRent2, 3000, Date.valueOf(LocalDate.of(2022, 1, 15)), Date.valueOf(LocalDate.of(2022, 3, 15)));
+        Booking booking1 = new Booking(2L, owner2, renter2, objectRent2, 3000, Date.valueOf(LocalDate.of(2022, 1, 15)), Date.valueOf(LocalDate.of(2022, 3, 18)));
         Booking booking2 = new Booking(3L, owner2, renter2, objectRent2, 3000, Date.valueOf(LocalDate.of(2022, 1, 15)), Date.valueOf(LocalDate.of(2022, 3, 15)));
         bookingRepository.createBook(booking);
         bookingRepository.createBook(booking1);

@@ -1,6 +1,7 @@
 package com.example.work.services;
 
 import com.example.work.dto.BookingRequest;
+import com.example.work.exceptions.BookingExistanceException;
 import com.example.work.models.Booking;
 import com.example.work.models.ObjectRent;
 import com.example.work.repository.BookingRepository;
@@ -29,12 +30,42 @@ public class BookServiceImpl implements BookingService {
     ObjectRentRepository objectRentRepository;
 
     @Override
-    public List<Booking> getAllBooking() {
+    public List<Booking> getAllBooking()
+    {
         return bookingRepository.getBooking();
     }
 
     @Override
-    public Booking addBooking(BookingRequest booking) throws Exception {
+    public List<Booking> getAllBookingByObjectRentId(Long objectRentId)
+    {
+        List<Booking> bookingByObjectRentId = bookingRepository.getBookingByObjectRentId(objectRentId);
+        if(!bookingByObjectRentId.isEmpty())
+        {
+            return bookingByObjectRentId;
+        }
+        else
+        {
+            throw new BookingExistanceException("Booking for object rent id " + objectRentId + " not exist");
+        }
+    }
+
+    @Override
+    public List<Booking> getAllBookingByRenterName(String renterName)
+    {
+        List<Booking> bookingByRenterName = bookingRepository.getBookingByRenterName(renterName);
+        if(!bookingByRenterName.isEmpty())
+        {
+            return bookingByRenterName;
+        }
+        else
+        {
+            throw new BookingExistanceException("Booking for " + renterName + " not exist");
+        }
+    }
+
+    @Override
+    public Booking addBooking(BookingRequest booking) throws Exception
+    {
         BookingValidator bookingValidator = new BookingValidator(bookingRepository, renterRepository, objectRentRepository);
         boolean valid = bookingValidator.valid(booking);
         if (!valid)
@@ -50,6 +81,10 @@ public class BookServiceImpl implements BookingService {
             int sum = months * rentObjectById.getPrice();
             Booking booking1 = new Booking(renterRepository.getRenterById(booking.getOwnerId()), renterRepository.getRenterById(booking.getTenantId()), rentObjectById, sum, new SimpleDateFormat("dd/MM/yyyy").parse(booking.getStart()), new SimpleDateFormat("dd/MM/yyyy").parse(booking.getEnd()));
             bookingRepository.createBook(booking1);
+        }
+        else
+        {
+            throw new BookingExistanceException("Booking in this time exist.");
         }
             return null;
     }

@@ -8,6 +8,10 @@ public interface BookingRepository {
 
     List<Booking> getBooking();
 
+    List<Booking> getBookingByObjectRentId(Long id);
+
+    List<Booking> getBookingByRenterName(String name);
+
     Booking createBook(Booking booking);
 
     Booking findBookingById(Long id);

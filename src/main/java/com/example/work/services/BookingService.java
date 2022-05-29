@@ -9,5 +9,9 @@ public interface BookingService {
 
     List<Booking> getAllBooking();
 
-     Booking addBooking(BookingRequest booking) throws Exception;
+    Booking addBooking(BookingRequest booking) throws Exception;
+
+    List<Booking> getAllBookingByObjectRentId(Long objectRentId);
+
+    List<Booking> getAllBookingByRenterName(String renterName);
 }
